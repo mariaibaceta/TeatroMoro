@@ -179,7 +179,7 @@ public class VentaTeatroCiclos {
             } 
             
             //Imprimir entrada
-            //teatro moro
+           
             System.out.println("..........................");
             System.out.println("   Boleta de Entrada Teatro Moro   ");
             System.out.println("..........................");
