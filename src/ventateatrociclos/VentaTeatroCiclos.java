@@ -8,7 +8,7 @@ public class VentaTeatroCiclos {
         
         Scanner sc = new Scanner(System.in); // esto es lo que permite leer//
         //Declaramos la variable que obtendra la opción del menu//
-        int seleccionMenu=0;
+        int seleccionMenu = 0;
         int tipoEntrada;
         int tipoTarifa;
         int tarifaBase = 0;
@@ -18,19 +18,19 @@ public class VentaTeatroCiclos {
         int descuentoPorEdad = 0;
         //DO-WHILE
         
-        int totalAsientos = 32;
+        int totalAsientos = 20;
         
-        String[] asientos = new String[totalAsientos]; // Arreglo con 32 posiciones (asientos)
+        String[] asientos = new String[totalAsientos]; // Arreglo con 20 posiciones (asientos)
         Boolean[] reservados = new Boolean[totalAsientos];
         String[] zonas = {"A","B","C","D"}; // Arreglo con zonas
         int cantXZona = 5;                  // Cantidad de asientos por Zona
         
-        int s = 0; // Variable indice para arreglo "asientos"        
+        int s = 0; // Variable indice para arreglo asientos  //     
         
-        // Itera bucle de zonas
+        //  bucle de zonas//
         for( int j = 0; j < zonas.length; j++ ){
             
-            // Itera bucle por cantidad de asientos
+            // bucle por cantidad de asientos//
             int x = 0;
             while ( x < cantXZona ){
                 // Inserta asiento en arreglo 
@@ -51,14 +51,69 @@ public class VentaTeatroCiclos {
             System.out.println("..........................");
             System.out.println("Seleccione las opciones a realizar: ");
             System.out.println("1.- COMPRAR ENTRADA");
-            System.out.println("2.- SALIR");
+            System.out.println("2.- RESERVAR ENTRADA");
+            System.out.println("3.- MODIFICAR VENTA");
+            System.out.println("4.- IMPRIMIR BOLETA");
+            System.out.println("5.- SALIR");
             seleccionMenu = sc.nextInt();
             
-            if (seleccionMenu >= 2 ){
-                System.out.println("Saliendo del sistema");
+            if (seleccionMenu == 5) {
+                System.out.println("HASTA PRONTO!");
                 break;
             }
+            if (seleccionMenu == 4) {
+                System.out.println("DEBE REALIZAR LA COMPRA");
+            }
 
+            if (seleccionMenu == 2) {
+                // Lógica de reserva de asiento//
+                System.out.println("Ingrese la zona y el numero de asiento a reservar (ejemplo: A1): ");
+                numeroAsiento = sc.next();
+                boolean reservado = false;
+                for (int i = 0; i < asientos.length; i++) {
+                    if (asientos[i].equals(numeroAsiento)) {
+                        if (!reservados[i]) {
+                            reservados[i] = true;
+                            System.out.println("El asiento " + numeroAsiento + " ha sido reservado con éxito.");
+                            reservado = true;
+                            break;
+                        } else {
+                            System.out.println("El asiento " + numeroAsiento + " ya está reservado.");
+                            reservado = true;
+                            break;
+                        }
+                    }
+                }
+                if (!reservado) {
+                    System.out.println("Asiento no válido.");
+                }
+                continue; // me muestra  el menú después de reservar//
+            }
+
+            if (seleccionMenu == 3) {
+                // Lógica para modificar una venta
+                System.out.println("Ingrese el número de asiento que desea modificar: ");
+                numeroAsiento = sc.next();
+                boolean encontrado = false;
+                for (int i = 0; i < asientos.length; i++) {
+                    if (asientos[i].equals(numeroAsiento)) {
+                        if (reservados[i]) {
+                            System.out.println("Modificando venta para el asiento " + numeroAsiento);
+                            reservados[i] = false; // Libera el asiento
+                            System.out.println("El asiento " + numeroAsiento + " ha sido liberado. Puede realizar una nueva compra o reserva.");
+                        } else {
+                            System.out.println("El asiento " + numeroAsiento + " no ha sido reservado.");
+                        }
+                        encontrado = true;
+                        break;
+                    }
+                }
+                if (!encontrado) {
+                    System.out.println("Asiento no encontrado.");
+                }
+                continue; // me muestra el menu despues de queerer modificar//
+            }
+            
             System.out.println("Tipos de Entrada: ");
             System.out.println("1.- VIP");
             System.out.println("2.- Platea baja");
@@ -68,7 +123,7 @@ public class VentaTeatroCiclos {
             System.out.println("Ingrese el numero del tipo de entrada: ");
             tipoEntrada = sc.nextInt();
             
-            if (tipoEntrada>4){
+            if (tipoEntrada > 4){
                 System.out.println("Debe Elegir una opcion valida en tipo de entrada");
                 break;
             }
@@ -82,33 +137,33 @@ public class VentaTeatroCiclos {
             System.out.println("");
             tipoTarifa = sc.nextInt();
 
-            // Valida opcion ingresada anteriormente
+            // Valida opcion ingresada anteriormente77
             if (tipoTarifa > 2 ){
                 System.out.println("Ingrese opción válida");
                 break;
             }
 
             
-            //SELECCIONAR EL ASIENTO
+            //SELECCIONAR EL ASIENTO EL USUARIO//
             System.out.println("--------------------------------------------");
             System.out.println("----------- ESCENARIO TEATRO----------------");
             System.out.println("--------------------------------------------");
             System.out.println("Zona A VIP - Zona B Baja - Zona C Alta - Zona D Palco");
             System.out.println("-ZONA A      | ZONA B      | ZONA C      |ZONA D");
-            System.out.println("-A1-A2-A3-A4-A5 | B1-B2-B3-B4-B5 | C1-C2-C3-C4-C5 | D1-D2-D3-D4-D5");
+            System.out.println("-A1-A2-A3-A4 | B1-B2-B3-B4 | C1-C2-C3-C4 | D1-D2-D3-D4");
             System.out.println("-----------------------------------------------------");
-            //lEER EL NUMERO DE ASIENTO
+            //lEER EL NUMERO DE ASIENTO//
 
-            System.out.println("Ingrese la zona y el numero de asiento ");
+            System.out.println("Ingrese la zona y el numero de asiento en mayuscula ");
             System.out.println("");
             numeroAsiento = sc.next();
             
-            // INICIO VALIDACION ASIENTOS
+            // INICIO VALIDACION ASIENTOS//
             boolean existe = false;
             boolean noDisponible = false;
-                                  //0    1     2    3    4    5                 
+                                  //0    1     2    3    4    5  //               
             //String[] asientos = {"A1","A2","A3","A4","A5"};
-            // Validar que asiento ingresado exista en arreglo Asientos
+            // Validar que asiento ingresado este en arreglo Asientos//
             for (int i = 0; i < asientos.length; i++ ){
                 if (asientos[i].equals(numeroAsiento) ){
                     existe = true;
@@ -132,37 +187,34 @@ public class VentaTeatroCiclos {
                 System.out.println("Asiento no está disponible");
                 continue;
             }
-            // FIN VALIDACION ASIENTOS
+            // AQUI TERMINA LA VALIDACION ASIENTOS//
 
             System.out.println("Ingrese su edad ");
             System.out.println("");
             edad = sc.nextInt();
 
-            //Estudiante// //VARIABLES//
+            // Estudiante// //VARIABLES//
             int vipE = 20000;
             int pBajaE = 10000;
             int pAltaE = 9000;
             int palcoE = 6500;
 
-            //General//
+            // General//
             int vipG = 30000;
             int pBajaG = 15000;
             int pAltaG = 18000;
             int palcoG = 13000;
 
-            //Si la entrada es VIP y Tipo Tarifa es estudiante//
+            // Si la entrada es VIP y Tipo Tarifa es estudiante//
             if (tipoEntrada == 1 && tipoTarifa == 1) {
-                //Calculos
-                //AQUI SE DEBE CALCULAR EL PRECIO BASE QUE ES TIPO DE ENTRADA - TIPO DE TARIFA//
+               //AQUI SE DEBE CALCULAR EL PRECIO BASE QUE ES TIPO DE ENTRADA - TIPO DE TARIFA//
                 tarifaBase = vipE;
                 if (edad >= 18 && edad < 60) {
-                    descuentoPorEdad= 2000;
+                    descuentoPorEdad = 2000;
                     precioFinal = tarifaBase - descuentoPorEdad;
-
                 } else if (edad >= 60) {
-                    descuentoPorEdad= 3000;
+                    descuentoPorEdad = 3000;
                     precioFinal = tarifaBase - descuentoPorEdad;
-                    
                 }
             } // Si la entrada es VIP y Tarifa es Publico general//
             else if (tipoEntrada == 1 && tipoTarifa == 2) {
@@ -170,87 +222,14 @@ public class VentaTeatroCiclos {
                 tarifaBase = vipG;
                 if (edad >= 18 && edad < 60) {
                     precioFinal = tarifaBase - 3000;
-                    descuentoPorEdad= 3000;
-
+                    descuentoPorEdad = 3000;
                 } else if (edad >= 60) {
                     precioFinal = tarifaBase - 4500;
-                    descuentoPorEdad= 4500;}
-         //--------------------------------------------------------//       
-            } else if (tipoEntrada == 2 && tipoTarifa == 1) {
-                tarifaBase = pBajaE;
-                if (edad >= 18 && edad < 60) {
-                    precioFinal = tarifaBase - 1000;
-                    descuentoPorEdad= 1000;
-
-                } else if (edad >= 60) {
-                    precioFinal = tarifaBase - 1500;
-                    descuentoPorEdad= 1500;}
-                
-          //-------------------------------------------------------//
-
-            } else if (tipoEntrada == 2 && tipoTarifa == 2) {
-                tarifaBase = pBajaG;
-                if (edad >= 18 && edad < 60) {
-                    precioFinal = tarifaBase - 1500;
-                    descuentoPorEdad= 1500;
-
-                } else if (edad >= 60) {
-                    precioFinal = tarifaBase - 2250;
-                    descuentoPorEdad= 2250;}
-               
-           //-------------------------------------------------------//
-                
-            } else if (tipoEntrada == 3 && tipoTarifa == 1) {
-                tarifaBase = pAltaE;
-                if (edad >= 18 && edad < 60) {
-                    precioFinal = tarifaBase - 900;
-                    descuentoPorEdad= 900;
-
-                } else if (edad >= 60) {
-                    precioFinal = tarifaBase - 1350;
-                    descuentoPorEdad= 1350;}
-                
-            //-------------------------------------------------------//
-            
-            } else if (tipoEntrada == 3 && tipoTarifa == 2) {
-                tarifaBase = pAltaG;
-                if (edad >= 18 && edad < 60) {
-                    precioFinal = tarifaBase - 1800;
-                    descuentoPorEdad= 1800;
-
-                } else if (edad >= 60) {
-                    precioFinal = tarifaBase - 2700;
-                    descuentoPorEdad= 2700;}
-                
-             //-------------------------------------------------------//
-            
-
-            } else if (tipoEntrada == 4 && tipoTarifa == 1) {
-                tarifaBase = palcoE;
-                if (edad >= 18 && edad < 60) {
-                    precioFinal = tarifaBase - 650;
-                    descuentoPorEdad= 650;
-
-                } else if (edad >= 60) {
-                    precioFinal = tarifaBase - 975;
-                    descuentoPorEdad= 975;}
-
-             //-------------------------------------------------------//    
-                
-            } else if (tipoEntrada == 4 && tipoTarifa == 2) {
-                tarifaBase = palcoG;
-                if (edad >= 18 && edad < 60) {
-                    precioFinal = tarifaBase - 1300;
-                    descuentoPorEdad= 1300;
-
-                } else if (edad >= 60) {
-                    precioFinal = tarifaBase - 1950;
-                    descuentoPorEdad= 1950;}
-                
+                    descuentoPorEdad = 4500;
+                }
             } 
             
-            //Imprimir entrada
-           
+            // Imprimir entrada//
             System.out.println("..........................");
             System.out.println("   Boleta de Entrada Teatro Moro   ");
             System.out.println("..........................");
@@ -262,6 +241,7 @@ public class VentaTeatroCiclos {
             
             System.out.println("¿Desea realizar otra compra? Favor seleccione la opcion a continuacion");
             
-        } while (seleccionMenu< 2);
-     }
-}       
+        } while (seleccionMenu < 4);
+            
+    }
+}
