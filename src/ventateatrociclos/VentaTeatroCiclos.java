@@ -1,9 +1,21 @@
 package ventateatrociclos;
 
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
+        
 
 public class VentaTeatroCiclos {
-
+    
+    //Variabless de estancia y estaticas//
+    
+    static List<String> ventasAsientos = new ArrayList<>();
+    static List<Integer> ventasPrecios = new ArrayList<>();
+    static List<Integer> ventasEdadCliente = new ArrayList<>() ;
+    static List<Integer> ventasDescuentos = new ArrayList<>();
+    
+    
+ 
     public static void main(String[] args) {
         
         Scanner sc = new Scanner(System.in); // esto es lo que permite leer//
@@ -16,6 +28,13 @@ public class VentaTeatroCiclos {
         int edad = 0;
         int precioFinal = 0;
         int descuentoPorEdad = 0;
+        
+        //Variables locales para mllevar el control de venta// 
+        List<String> ventasLocalesAsientos = new ArrayList<>();
+        List<Integer> ventasLocalesPrecios = new ArrayList<>();
+        List<Integer> ventasLocalesEdadCliente = new ArrayList<>();
+        
+        
         //DO-WHILE
         
         int totalAsientos = 20;
@@ -229,6 +248,17 @@ public class VentaTeatroCiclos {
                 }
             } 
             
+            ventasAsientos.add(numeroAsiento);
+            ventasPrecios.add(precioFinal);
+            ventasEdadCliente.add(edad);
+            
+            ventasLocalesAsientos.add(numeroAsiento);
+            ventasLocalesPrecios.add(precioFinal);
+            ventasLocalesEdadCliente.add(edad);
+            ventasDescuentos.add(descuentoPorEdad); 
+            
+            
+            
             // Imprimir entrada//
             System.out.println("..........................");
             System.out.println("   Boleta de Entrada Teatro Moro   ");
@@ -242,6 +272,15 @@ public class VentaTeatroCiclos {
             System.out.println("¿Desea realizar otra compra? Favor seleccione la opcion a continuacion");
             
         } while (seleccionMenu < 4);
-            
+        
+        //RESUEM FINAL DE LAS VENTAS//
+         System.out.println(" ACA SE ENCUENTRA EL RESUMEN DE VENTAS ------");
+        for (int i = 0; i < ventasAsientos.size(); i++) {
+            System.out.println("Asiento: " + ventasAsientos.get(i) +
+                               " | Precio Final: $" + ventasPrecios.get(i) +
+                               " | Descuento Aplicado: $" + ventasDescuentos.get(i));
+        }
+        System.out.println("Gracias por su visita el teatro moro");
     }
-}
+}   
+   
