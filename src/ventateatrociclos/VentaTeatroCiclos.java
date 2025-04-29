@@ -273,14 +273,14 @@ public class VentaTeatroCiclos {
             
         } while (seleccionMenu < 4);
         
-        //RESUEM FINAL DE LAS VENTAS//
-         System.out.println(" ACA SE ENCUENTRA EL RESUMEN DE VENTAS ------");
+        //RESUEMN FINAL DE LAS VENTAS//
+         System.out.println("--- RESUMEN DE VENTAS ------");
         for (int i = 0; i < ventasAsientos.size(); i++) {
             System.out.println("Asiento: " + ventasAsientos.get(i) +
                                " | Precio Final: $" + ventasPrecios.get(i) +
                                " | Descuento Aplicado: $" + ventasDescuentos.get(i));
         }
-        System.out.println("Gracias por su visita el teatro moro");
+        System.out.println("Gracias por su compra");
     }
 }   
    
