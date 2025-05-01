@@ -3,23 +3,23 @@ package ventateatrociclos;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
-        
+import java.util.LinkedList;
 
 public class VentaTeatroCiclos {
-    
-    //Variabless de estancia y estaticas//
+
+    //Variables Estaticas y de estancias para las ventas//
     
     static List<String> ventasAsientos = new ArrayList<>();
     static List<Integer> ventasPrecios = new ArrayList<>();
-    static List<Integer> ventasEdadCliente = new ArrayList<>() ;
-    static List<Integer> ventasDescuentos = new ArrayList<>();
+    public List<Integer> ventasDescuentos = new ArrayList<>() ;
     
-    
- 
     public static void main(String[] args) {
         
+        VentaTeatroCiclos instancia = new VentaTeatroCiclos(); //Va de la mano con la variable de instancia//
+
         Scanner sc = new Scanner(System.in); // esto es lo que permite leer//
-        //Declaramos la variable que obtendra la opción del menu//
+        
+        //Declaramos la VARIABLES LOCALES que obtendra la opción del menu//
         int seleccionMenu = 0;
         int tipoEntrada;
         int tipoTarifa;
@@ -28,18 +28,11 @@ public class VentaTeatroCiclos {
         int edad = 0;
         int precioFinal = 0;
         int descuentoPorEdad = 0;
-        
-        //Variables locales para mllevar el control de venta// 
-        List<String> ventasLocalesAsientos = new ArrayList<>();
-        List<Integer> ventasLocalesPrecios = new ArrayList<>();
-        List<Integer> ventasLocalesEdadCliente = new ArrayList<>();
-        
-        
         //DO-WHILE
         
         int totalAsientos = 20;
         
-        String[] asientos = new String[totalAsientos]; // Arreglo con 20 posiciones (asientos)
+        LinkedList<String> asientos = new LinkedList<>(); // Arreglo con 20 posiciones (asientos)
         Boolean[] reservados = new Boolean[totalAsientos];
         String[] zonas = {"A","B","C","D"}; // Arreglo con zonas
         int cantXZona = 5;                  // Cantidad de asientos por Zona
@@ -54,7 +47,7 @@ public class VentaTeatroCiclos {
             while ( x < cantXZona ){
                 // Inserta asiento en arreglo 
                 reservados[s] = false;
-                asientos[s] = zonas[j] + ( x + 1 );
+                asientos.add(zonas[j] + (x + 1));
                 // asiento[0] = A1
                 // asiento[1] = A2
                 // asiento[2] = A3
@@ -74,7 +67,19 @@ public class VentaTeatroCiclos {
             System.out.println("3.- MODIFICAR VENTA");
             System.out.println("4.- IMPRIMIR BOLETA");
             System.out.println("5.- SALIR");
+            System.out.println("6.- ELIMINAR VENTA");
+            
+            // validacion de entrada//
+             while (!sc.hasNextInt()) {
+                System.out.println("Ingrese un número válido:");
+                sc.next();
+            }
             seleccionMenu = sc.nextInt();
+            
+            if (seleccionMenu < 1 || seleccionMenu > 6) { // Si ingresa un numero no indicado en el menu///
+                System.out.println("Opcion no valida, Intente nuevamente."); 
+                continue;
+            }
             
             if (seleccionMenu == 5) {
                 System.out.println("HASTA PRONTO!");
@@ -83,14 +88,31 @@ public class VentaTeatroCiclos {
             if (seleccionMenu == 4) {
                 System.out.println("DEBE REALIZAR LA COMPRA");
             }
+            if (seleccionMenu == 6) {
+                System.out.println("Ingrese el número de asiento eliminar: ");
+                numeroAsiento = sc.next();
+                int indexEliminar = ventasAsientos.indexOf(numeroAsiento);
+
+                if (indexEliminar != -1) {
+                    ventasAsientos.remove(indexEliminar); 
+                    ventasPrecios.remove(indexEliminar); 
+                    instancia.ventasDescuentos.remove(indexEliminar);
+
+                    System.out.println("Venta eliminada correctamente."); 
+                } else { 
+                    System.out.println("El asiento no tiene una venta registrada."); 
+                } 
+
+                continue; 
+            } 
 
             if (seleccionMenu == 2) {
                 // Lógica de reserva de asiento//
-                System.out.println("Ingrese la zona y el numero de asiento a reservar (ejemplo: A1): ");
+                System.out.println("Ingrese la zona y el numero de asiento a reservar - ejemplo: A1- : ");
                 numeroAsiento = sc.next();
                 boolean reservado = false;
-                for (int i = 0; i < asientos.length; i++) {
-                    if (asientos[i].equals(numeroAsiento)) {
+                for (int i = 0; i < asientos.size(); i++) {
+                    if (asientos.get(i).equals(numeroAsiento)) {
                         if (!reservados[i]) {
                             reservados[i] = true;
                             System.out.println("El asiento " + numeroAsiento + " ha sido reservado con éxito.");
@@ -106,7 +128,7 @@ public class VentaTeatroCiclos {
                 if (!reservado) {
                     System.out.println("Asiento no válido.");
                 }
-                continue; // me muestra  el menú después de reservar//
+                continue; // me muestra   el menú después de reservar//
             }
 
             if (seleccionMenu == 3) {
@@ -114,8 +136,8 @@ public class VentaTeatroCiclos {
                 System.out.println("Ingrese el número de asiento que desea modificar: ");
                 numeroAsiento = sc.next();
                 boolean encontrado = false;
-                for (int i = 0; i < asientos.length; i++) {
-                    if (asientos[i].equals(numeroAsiento)) {
+                for (int i = 0; i < asientos.size(); i++) {
+                    if (asientos.get(i).equals(numeroAsiento)) {
                         if (reservados[i]) {
                             System.out.println("Modificando venta para el asiento " + numeroAsiento);
                             reservados[i] = false; // Libera el asiento
@@ -183,8 +205,8 @@ public class VentaTeatroCiclos {
                                   //0    1     2    3    4    5  //               
             //String[] asientos = {"A1","A2","A3","A4","A5"};
             // Validar que asiento ingresado este en arreglo Asientos//
-            for (int i = 0; i < asientos.length; i++ ){
-                if (asientos[i].equals(numeroAsiento) ){
+            for (int i = 0; i < asientos.size(); i++) {
+                if (asientos.get(i).equals(numeroAsiento)) {
                     existe = true;
                     
                     if ( reservados[i] == false ) {
@@ -210,54 +232,38 @@ public class VentaTeatroCiclos {
 
             System.out.println("Ingrese su edad ");
             System.out.println("");
+            
+            //validacion de entrada por edad//
+            while (!sc.hasNextInt()) {
+                System.out.println("Ingrese una edad válida - Numero entero :");
+                sc.next();
+            }
             edad = sc.nextInt();
 
-            // Estudiante// //VARIABLES//
-            int vipE = 20000;
-            int pBajaE = 10000;
-            int pAltaE = 9000;
-            int palcoE = 6500;
+            // Tabla de precios //VARIABLES//
+            
+            int[][] precios = {
+            //Estudiante-General//
+                {20000, 30000},  // VIP
+                {10000, 15000},  // Platea baja
+                { 9000, 18000},  // Platea alta
+                { 6500, 13000}   // Palco
+            };
 
-            // General//
-            int vipG = 30000;
-            int pBajaG = 15000;
-            int pAltaG = 18000;
-            int palcoG = 13000;
+            tarifaBase = precios[tipoEntrada - 1][tipoTarifa - 1];
 
-            // Si la entrada es VIP y Tipo Tarifa es estudiante//
-            if (tipoEntrada == 1 && tipoTarifa == 1) {
-               //AQUI SE DEBE CALCULAR EL PRECIO BASE QUE ES TIPO DE ENTRADA - TIPO DE TARIFA//
-                tarifaBase = vipE;
-                if (edad >= 18 && edad < 60) {
-                    descuentoPorEdad = 2000;
-                    precioFinal = tarifaBase - descuentoPorEdad;
-                } else if (edad >= 60) {
-                    descuentoPorEdad = 3000;
-                    precioFinal = tarifaBase - descuentoPorEdad;
-                }
-            } // Si la entrada es VIP y Tarifa es Publico general//
-            else if (tipoEntrada == 1 && tipoTarifa == 2) {
-                
-                tarifaBase = vipG;
-                if (edad >= 18 && edad < 60) {
-                    precioFinal = tarifaBase - 3000;
-                    descuentoPorEdad = 3000;
-                } else if (edad >= 60) {
-                    precioFinal = tarifaBase - 4500;
-                    descuentoPorEdad = 4500;
-                }
-            } 
+            if (edad >= 18 && edad < 60) {
+                descuentoPorEdad = (int)(tarifaBase * 0.10); // 10%
+            } else if (edad >= 60) {
+                descuentoPorEdad = (int)(tarifaBase * 0.15); // 15%
+            }
+
+            precioFinal = tarifaBase - descuentoPorEdad;
             
-            ventasAsientos.add(numeroAsiento);
-            ventasPrecios.add(precioFinal);
-            ventasEdadCliente.add(edad);
-            
-            ventasLocalesAsientos.add(numeroAsiento);
-            ventasLocalesPrecios.add(precioFinal);
-            ventasLocalesEdadCliente.add(edad);
-            ventasDescuentos.add(descuentoPorEdad); 
-            
-            
+            // LISTAS DE VENTA / Almacena datos de la venta/
+            ventasAsientos.add(numeroAsiento);       
+            ventasPrecios.add(precioFinal);           
+            instancia.ventasDescuentos.add(descuentoPorEdad);  
             
             // Imprimir entrada//
             System.out.println("..........................");
@@ -271,16 +277,9 @@ public class VentaTeatroCiclos {
             
             System.out.println("¿Desea realizar otra compra? Favor seleccione la opcion a continuacion");
             
-        } while (seleccionMenu < 4);
-        
-        //RESUEMN FINAL DE LAS VENTAS//
-         System.out.println("--- RESUMEN DE VENTAS ------");
-        for (int i = 0; i < ventasAsientos.size(); i++) {
-            System.out.println("Asiento: " + ventasAsientos.get(i) +
-                               " | Precio Final: $" + ventasPrecios.get(i) +
-                               " | Descuento Aplicado: $" + ventasDescuentos.get(i));
-        }
-        System.out.println("Gracias por su compra");
+         } while (seleccionMenu < 7); // Con esto dejo que vuelva al menu despues de eliminar un asiento vendido//
+            
     }
-}   
-   
+}
+         //YAPROFE UTILICE Y/O REEMPLACE EL UN ARRAY LIST POR LINKEDLIST //
+         
