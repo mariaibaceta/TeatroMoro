@@ -1,14 +1,15 @@
-package ventateatrociclos;
+package ventateatrociclos; 
 
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.LinkedList;
+import java.util.InputMismatchException;
 
 public class VentaTeatroCiclos {
 
-    //Variables Estaticas y de estancias para las ventas//
-    
+    //Variables Estaticas y de estancias para las ventass//
+
     static List<String> ventasAsientos = new ArrayList<>();
     static List<Integer> ventasPrecios = new ArrayList<>();
     public List<Integer> ventasDescuentos = new ArrayList<>() ;
@@ -17,25 +18,19 @@ public class VentaTeatroCiclos {
         
         VentaTeatroCiclos instancia = new VentaTeatroCiclos(); //Va de la mano con la variable de instancia//
 
-        Scanner sc = new Scanner(System.in); // esto es lo que permite leer//
+        Scanner sc = new Scanner(System.in); 
         
-        //Declaramos la VARIABLES LOCALES que obtendra la opción del menu//
-        int seleccionMenu = 0;
-        int tipoEntrada;
-        int tipoTarifa;
-        int tarifaBase = 0;
-        String numeroAsiento = "";
-        int edad = 0;
-        int precioFinal = 0;
-        int descuentoPorEdad = 0;
-        //DO-WHILE
-        
+                        //P A R A   E L   P R O F E S O R //
+            //OPTIMIZACION    DEL    RENDIMIENTO    CON    ESTRUCTURA    DE   DATOS//
+            
+           //En el siguiente bloque realizo la optimizacion a traves de una lista enlazada (LinkedList) 
+           //para almacenar los nombres de los asientos//
+          
         int totalAsientos = 20;
-        
         LinkedList<String> asientos = new LinkedList<>(); // Arreglo con 20 posiciones (asientos)
         Boolean[] reservados = new Boolean[totalAsientos];
-        String[] zonas = {"A","B","C","D"}; // Arreglo con zonas
-        int cantXZona = 5;                  // Cantidad de asientos por Zona
+        String[] zonas = {"A","B","C","D"}; // Arreglo con zonas//
+        int cantXZona = 5;                  // Cantidad de asientos por Zona/
         
         int s = 0; // Variable indice para arreglo asientos  //     
         
@@ -55,8 +50,18 @@ public class VentaTeatroCiclos {
                 x++;
             }   
         }
-        
+         int seleccionMenu = 0;
         do {
+        //Declaro la VARIABLES LOCALES que obtendra la opción del menu//
+        
+
+        int tipoEntrada;
+        int tipoTarifa;
+        int tarifaBase = 0;
+        String numeroAsiento = "";
+        int edad = 0;
+        int precioFinal = 0;
+        int totalDescuentos = 0;
 
             System.out.println("..........................");
             System.out.println("   Entradas Teatro Moro   ");
@@ -69,12 +74,13 @@ public class VentaTeatroCiclos {
             System.out.println("5.- SALIR");
             System.out.println("6.- ELIMINAR VENTA");
             
-            // validacion de entrada//
-             while (!sc.hasNextInt()) {
-                System.out.println("Ingrese un número válido:");
-                sc.next();
+            try {
+                seleccionMenu = sc.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("Debe ingresar un número valido entero");
+                sc.next(); 
+                continue;
             }
-            seleccionMenu = sc.nextInt();
             
             if (seleccionMenu < 1 || seleccionMenu > 6) { // Si ingresa un numero no indicado en el menu///
                 System.out.println("Opcion no valida, Intente nuevamente."); 
@@ -86,28 +92,42 @@ public class VentaTeatroCiclos {
                 break;
             }
             if (seleccionMenu == 4) {
-                System.out.println("DEBE REALIZAR LA COMPRA");
+                System.out.println("Ingrese numero de asiento comprado para imprimir Boleta");
+                numeroAsiento = sc.next();
+                int indexBoleta = ventasAsientos.indexOf(numeroAsiento);
+                if (indexBoleta != -1) {
+                    System.out.println("..........................");
+                    System.out.println("Boleta de Entrada Teatro Moro");
+                    System.out.println("Asiento: " + numeroAsiento);
+                    System.out.println("Precio pagado: $" + ventasPrecios.get(indexBoleta));
+                    System.out.println("Descuento aplicado:$" + instancia.ventasDescuentos.get(indexBoleta));
+                    System.out.println("..........................");
+                } else {
+                    System.out.println("No hay venta registrada para ese asiento.");
+                }
+                continue;
             }
+                
             if (seleccionMenu == 6) {
                 System.out.println("Ingrese el número de asiento eliminar: ");
                 numeroAsiento = sc.next();
                 int indexEliminar = ventasAsientos.indexOf(numeroAsiento);
 
-                if (indexEliminar != -1) {
-                    ventasAsientos.remove(indexEliminar); 
-                    ventasPrecios.remove(indexEliminar); 
-                    instancia.ventasDescuentos.remove(indexEliminar);
+            if (indexEliminar != -1) {
+                ventasAsientos.remove(indexEliminar); 
+                ventasPrecios.remove(indexEliminar); 
+                instancia.ventasDescuentos.remove(indexEliminar);
 
-                    System.out.println("Venta eliminada correctamente."); 
-                } else { 
-                    System.out.println("El asiento no tiene una venta registrada."); 
-                } 
-
-                continue; 
+                System.out.println("Venta eliminada correctamente."); 
+            } else { 
+                System.out.println("El asiento no tiene una venta registrada."); 
             } 
 
+            continue;
+        }      
+
             if (seleccionMenu == 2) {
-                // Lógica de reserva de asiento//
+                // Mi logica de reserva de asiento//
                 System.out.println("Ingrese la zona y el numero de asiento a reservar - ejemplo: A1- : ");
                 numeroAsiento = sc.next();
                 boolean reservado = false;
@@ -132,7 +152,7 @@ public class VentaTeatroCiclos {
             }
 
             if (seleccionMenu == 3) {
-                // Lógica para modificar una venta
+                // Mi logica para modificar una venta/
                 System.out.println("Ingrese el número de asiento que desea modificar: ");
                 numeroAsiento = sc.next();
                 boolean encontrado = false;
@@ -140,7 +160,7 @@ public class VentaTeatroCiclos {
                     if (asientos.get(i).equals(numeroAsiento)) {
                         if (reservados[i]) {
                             System.out.println("Modificando venta para el asiento " + numeroAsiento);
-                            reservados[i] = false; // Libera el asiento
+                            reservados[i] = false; // aqui estoy liberando asiento//
                             System.out.println("El asiento " + numeroAsiento + " ha sido liberado. Puede realizar una nueva compra o reserva.");
                         } else {
                             System.out.println("El asiento " + numeroAsiento + " no ha sido reservado.");
@@ -160,28 +180,56 @@ public class VentaTeatroCiclos {
             System.out.println("2.- Platea baja");
             System.out.println("3.- Platea alta");
             System.out.println("4.- Palco");
+            System.out.println("5.- General");
             System.out.println("");
             System.out.println("Ingrese el numero del tipo de entrada: ");
-            tipoEntrada = sc.nextInt();
             
-            if (tipoEntrada > 4){
+             try {
+                tipoEntrada = sc.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println(" Debe ingresar un numero entero");
+                sc.next(); 
+                continue;
+            }           
+             
+                                     //P A R A   E L   P R O F E S O R // 
+                 // D E P U R A D O R -- U T I L I Z A D O // P R U E B A S   R E A L I Z A D A S //
+                 
+             //PROFE, EN LA SIGUIENTE LOGICA (BLOQUE), RELICE UNA DEPURACION EN LA VARIABLE "tipoEntrada", 
+             //LA CUAL ME AYUDA A VALIDAR QUE EL TIPO DE ENTRADA INGRESADA POR EL USUARIO, 
+             //ESTE DENTRO DE LAS OPCIONES PERMITIDAS//
+           
+             //ESTO ME SIRVE PARA EVITAR QUE EL PROGRAMA AVANCE CON OPCIONES INVALIDAS, ASI MANTIENE UN
+             //CONTROL DEL FLUJO, PARA QUE FUNCIONE DE FORMA CORRECTA//
+             
+             // FUNCIONA ASI: Si el numero es mayor a 4 (lo que seria una opcion invalida, muestra un mensaje de error
+             // y le pide al usuario que ingrese nuevamente una opcion valida segun el menu entregado al usuario//
+             
+            if (tipoEntrada < 1 || tipoEntrada > 5){
                 System.out.println("Debe Elegir una opcion valida en tipo de entrada");
-                break;
+                continue;
             }
-
+               
+             
             System.out.println("");
             System.out.println("Tipo de Tarifa: ");
             System.out.println("1.- Estudiante");
             System.out.println("2.- Publico General");
-            System.out.println("");
+            System.out.println("-------------------------");
             System.out.println("Ingrese el numero de su tipo de tarifa: ");
-            System.out.println("");
-            tipoTarifa = sc.nextInt();
 
-            // Valida opcion ingresada anteriormente77
-            if (tipoTarifa > 2 ){
+                //MANEJO DE EXCEPCIONES//
+            try {
+                tipoTarifa = sc.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("Debe ingresar un numero entero");
+                sc.next(); 
+                continue;
+            }
+            // Valida opcion ingresada anteriormente//
+            if (tipoTarifa < 1 || tipoTarifa > 2 ){
                 System.out.println("Ingrese opción válida");
-                break;
+                continue;
             }
 
             
@@ -189,9 +237,9 @@ public class VentaTeatroCiclos {
             System.out.println("--------------------------------------------");
             System.out.println("----------- ESCENARIO TEATRO----------------");
             System.out.println("--------------------------------------------");
-            System.out.println("Zona A VIP - Zona B Baja - Zona C Alta - Zona D Palco");
-            System.out.println("-ZONA A      | ZONA B      | ZONA C      |ZONA D");
-            System.out.println("-A1-A2-A3-A4 | B1-B2-B3-B4 | C1-C2-C3-C4 | D1-D2-D3-D4");
+            System.out.println("Zona A VIP - Zona B Baja - Zona C Alta - Zona D Palco - Zona E GENERAL");
+            System.out.println("-ZONA A      | ZONA B      | ZONA C      |ZONA D y ZONA E  ");
+            System.out.println("-A1-A2-A3-A4 | B1-B2-B3-B4 | C1-C2-C3-C4 | D1-D2-D3-D4 ");
             System.out.println("-----------------------------------------------------");
             //lEER EL NUMERO DE ASIENTO//
 
@@ -233,53 +281,109 @@ public class VentaTeatroCiclos {
             System.out.println("Ingrese su edad ");
             System.out.println("");
             
-            //validacion de entrada por edad//
+            //validacion de entrada por edad// Aca verifico que sea un numero y no una LETRA//
+                    //  MANEJO DE EXCEPCIONES//
             while (!sc.hasNextInt()) {
                 System.out.println("Ingrese una edad válida - Numero entero :");
                 sc.next();
             }
             edad = sc.nextInt();
-
+            
+            // pregunta genero de la persona//por descuento para mujer//
+            System.out.println("Ingrese su género (M para mujer, H para hombre): ");
+            String genero = sc.next().toUpperCase();
+            
+                    if (!genero.equals("M") && !genero.equals("H")) {
+            System.out.println("Género no válido. Debe ser M o H.");
+            continue;
+            }
+            
             // Tabla de precios //VARIABLES//
             
             int[][] precios = {
-            //Estudiante-General//
+          
                 {20000, 30000},  // VIP
                 {10000, 15000},  // Platea baja
                 { 9000, 18000},  // Platea alta
-                { 6500, 13000}   // Palco
+                { 6500, 13000},  // Palco
+                {10000, 10000}   // General
             };
 
             tarifaBase = precios[tipoEntrada - 1][tipoTarifa - 1];
 
-            if (edad >= 18 && edad < 60) {
-                descuentoPorEdad = (int)(tarifaBase * 0.10); // 10%
-            } else if (edad >= 60) {
-                descuentoPorEdad = (int)(tarifaBase * 0.15); // 15%
+            totalDescuentos = 0;
+
+                    int descuentoMaximo = 0;
+            String motivoDescuento = "";
+
+            if (edad < 12) {
+                int descuento = (int)(tarifaBase * 0.10);
+            if (descuento > descuentoMaximo) {
+                descuentoMaximo = descuento;
+                motivoDescuento = "Niño (-10%)";
+                
+                }
+            }
+            if (genero.equals("M")) {
+                int descuento = (int)(tarifaBase * 0.20);
+            if (descuento > descuentoMaximo) {
+                descuentoMaximo = descuento;
+                motivoDescuento = "Mujer (-20%)";
+                }
+            }
+            if (tipoTarifa == 1) {
+                int descuento = (int)(tarifaBase * 0.15);
+            if (descuento > descuentoMaximo) {
+                descuentoMaximo = descuento;
+                motivoDescuento = "Estudiante (-15%)";
+                
+                }
+            }
+            if (edad >= 60) {
+                int descuento = (int)(tarifaBase * 0.25);
+                if (descuento > descuentoMaximo) {
+                    descuentoMaximo = descuento;
+                    motivoDescuento = "Tercera edad (-25%)";
+                }
             }
 
-            precioFinal = tarifaBase - descuentoPorEdad;
+                totalDescuentos = descuentoMaximo;
+            precioFinal = tarifaBase - totalDescuentos;
+            if (precioFinal < 0) precioFinal = 0;
+            
+
             
             // LISTAS DE VENTA / Almacena datos de la venta/
             ventasAsientos.add(numeroAsiento);       
             ventasPrecios.add(precioFinal);           
-            instancia.ventasDescuentos.add(descuentoPorEdad);  
+            instancia.ventasDescuentos.add(totalDescuentos);  
             
             // Imprimir entrada//
             System.out.println("..........................");
-            System.out.println("   Boleta de Entrada Teatro Moro   ");
+            System.out.println("   Boleta de Entrada Teatro Moro  ");
             System.out.println("..........................");
             System.out.println("Ubicación del asiento " + (numeroAsiento));
             System.out.println("Precio base de la entrada " + (tarifaBase));
-            System.out.println("Descuento aplicado  " + (descuentoPorEdad));
+            System.out.println("Descuentos aplicados:");
+            if (totalDescuentos > 0) {
+            System.out.println("- " + motivoDescuento);
+            } else {
+            System.out.println("Ninguno");
+}
+            System.out.println("Total descuento aplicado: $" + totalDescuentos);
+            
+            
             System.out.println("Precio final a pagar  " + (precioFinal));
             System.out.println("..........................");
-            
             System.out.println("¿Desea realizar otra compra? Favor seleccione la opcion a continuacion");
             
-         } while (seleccionMenu < 7); // Con esto dejo que vuelva al menu despues de eliminar un asiento vendido//
+            
+         } while (seleccionMenu != 5); // Con esto dejo que vuelva al menu despues de eliminar un asiento vendido//
             
     }
 }
-         //YAPROFE UTILICE Y/O REEMPLACE EL UN ARRAY LIST POR LINKEDLIST //
+
+
+
+      
          
